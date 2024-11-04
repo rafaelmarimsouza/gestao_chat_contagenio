@@ -3,7 +3,7 @@ import pandas as pd
 from data_loader import load_data, load_description_options
 from datetime import datetime
 
-# Configuração da Interface do Streamlit
+# Configuração de filtros e paginação na interface do Streamlit
 st.sidebar.header("Filtros")
 start_date = st.sidebar.date_input("Data de início", value=None)
 end_date = st.sidebar.date_input("Data de término", value=None)
@@ -13,16 +13,23 @@ user_app_hash = st.sidebar.text_input("Usuário (user_app_hash)")
 description_options = [""] + load_description_options()  
 description = st.sidebar.selectbox("Assistente (description)", options=description_options)
 
+# Controle de paginação
+items_per_page = st.sidebar.selectbox("Itens por página", options=[10, 20, 50, 100], index=1)
+page_number = st.sidebar.number_input("Página", min_value=1, step=1, value=1)
+offset = (page_number - 1) * items_per_page
+
 # Botão para aplicar filtros
 if st.sidebar.button("OK"):
     df = load_data(
         start_date=start_date if start_date else None,
         end_date=end_date if end_date else None,
         user_app_hash=user_app_hash if user_app_hash else None,
-        description=description if description else None
+        description=description if description else None,
+        limit=items_per_page,
+        offset=offset
     )
 else:
-    df = load_data()
+    df = load_data(limit=items_per_page, offset=offset)
 
 # Exibição das Conversas
 latest_messages = df.sort_values('created_at').groupby('thread_ID').last().reset_index()

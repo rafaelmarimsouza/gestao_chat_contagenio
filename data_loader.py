@@ -12,9 +12,10 @@ def load_description_options():
     conn.close()
     return df['description'].tolist()
 
-def load_data(start_date=None, end_date=None, user_app_hash=None, description=None):
+def load_data(start_date=None, end_date=None, user_app_hash=None, description=None, limit=50, offset=0):
     conn = get_db_connection()
     
+    # Construindo a consulta SQL com filtros opcionais
     query = """
     SELECT m.thread_ID, m.created_at, m.role, m.text, t.user_app_hash, tt.description
     FROM messages m
@@ -36,6 +37,11 @@ def load_data(start_date=None, end_date=None, user_app_hash=None, description=No
     if description:
         query += " AND tt.description = %(description)s"
         params['description'] = description
+
+    # Adicionando a cláusula LIMIT e OFFSET para paginação
+    query += " ORDER BY m.created_at DESC LIMIT %(limit)s OFFSET %(offset)s"
+    params['limit'] = limit
+    params['offset'] = offset
 
     df = pd.read_sql(query, conn, params=params)
     conn.close()
