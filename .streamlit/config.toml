@@ -2,7 +2,7 @@
 
 [server]
 headless = true
-port = "$PORT"
+port = $PORT  # Remove as aspas ao redor de $PORT
 enableCORS = false
 
 [theme]
