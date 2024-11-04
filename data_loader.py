@@ -15,13 +15,16 @@ def load_description_options():
 def load_data(start_date=None, end_date=None, user_app_hash=None, description=None, limit=50, offset=0):
     conn = get_db_connection()
     
-    # Construindo a consulta SQL com filtros opcionais
+    # Construindo a consulta SQL com filtros opcionais e condição de interação do usuário
     query = """
     SELECT m.thread_ID, m.created_at, m.role, m.text, t.user_app_hash, tt.description
     FROM messages m
     JOIN threads t ON m.thread_ID = t.id
     JOIN thread_types tt ON t.thread_type_id = tt.id
-    WHERE 1=1
+    WHERE EXISTS (
+        SELECT 1 FROM messages
+        WHERE thread_ID = m.thread_ID AND role = 'user'
+    )
     """
     
     params = {}
