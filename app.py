@@ -9,7 +9,7 @@ USERS = {
     "livia@contaja.com.br": hashlib.sha256("6\'=9xU1[DpS".encode()).hexdigest(),
     "hudson@contaja.com.br": hashlib.sha256(":r)&526Q5rG-".encode()).hexdigest(),
     "rafael@contaja.com.br": hashlib.sha256("naa8}3Uy8Sq~".encode()).hexdigest(),
-    "daniele@contaja.com.br": hashlib.sha256("naa8}3Uy8Sq~".encode()).hexdigest()
+    "daniele@contaja.com.br": hashlib.sha256("naa813Uy8Sq~".encode()).hexdigest()
 
 }
 
