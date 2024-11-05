@@ -8,8 +8,8 @@ USERS = {
     "joao@contajá.com.br": hashlib.sha256("9uM2£g55V>~|".encode()).hexdigest(),
     "livia@contaja.com.br": hashlib.sha256("6\'=9xU1[DpS".encode()).hexdigest(),
     "hudson@contaja.com.br": hashlib.sha256(":r)&526Q5rG-".encode()).hexdigest(),
-    "rafael@contaja.com.br": hashlib.sha256("naa8}3Uy8Sq~".encode()).hexdigest()
-
+    "rafael@contaja.com.br": hashlib.sha256("naa8}3Uy8Sq~".encode()).hexdigest(),
+    "daniele@contaja.com.br": hashlib.sha256("naa8}3Uy8Sq~".encode()).hexdigest()
 
 }
 
