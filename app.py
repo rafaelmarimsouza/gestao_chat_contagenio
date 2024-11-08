@@ -46,7 +46,7 @@ else:
     description = st.sidebar.selectbox("Assistente (description)", options=description_options)
 
     # Controle de paginação
-    items_per_page = st.sidebar.selectbox("Itens por página", options=[10, 20, 50, 100], index=1)
+    items_per_page = st.sidebar.selectbox("Itens per página", options=[10, 20, 50, 100], index=1)
     page_number = st.sidebar.number_input("Página", min_value=1, step=1, value=1)
     offset = (page_number - 1) * items_per_page
 
@@ -73,10 +73,12 @@ else:
         thread_id = row['thread_ID']
         last_update = row['created_at']
         user_app_hash = row['user_app_hash']
+        company_app_hash = row['company_app_hash']
         description = row['description']
         
         st.markdown(
-            f"### Hash do Usuário: {user_app_hash}  <br>"
+            f"### Hash da Empresa: {company_app_hash}  <br>"
+            f"Hash do Usuário: {user_app_hash}  <br>"
             f"Assistente: {description}  <br>"
             f"Última interação: {last_update.strftime('%d/%m/%Y %H:%M')}",
             unsafe_allow_html=True

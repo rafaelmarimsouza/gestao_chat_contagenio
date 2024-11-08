@@ -17,7 +17,7 @@ def load_data(start_date=None, end_date=None, user_app_hash=None, description=No
     
     # Construindo a consulta SQL com filtros opcionais e condição de interação do usuário
     query = """
-    SELECT m.thread_ID, m.created_at, m.role, m.text, t.user_app_hash, tt.description
+    SELECT m.thread_ID, m.created_at, m.role, m.text, t.user_app_hash, t.company_app_hash, tt.description
     FROM messages m
     JOIN threads t ON m.thread_ID = t.id
     JOIN thread_types tt ON t.thread_type_id = tt.id
@@ -42,7 +42,7 @@ def load_data(start_date=None, end_date=None, user_app_hash=None, description=No
         params['description'] = description
 
     # Adicionando a cláusula LIMIT e OFFSET para paginação
-    query += " ORDER BY m.created_at DESC LIMIT %(limit)s OFFSET %(offset)s"
+    query += " LIMIT %(limit)s OFFSET %(offset)s"
     params['limit'] = limit
     params['offset'] = offset
 
