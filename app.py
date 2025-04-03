@@ -2,6 +2,7 @@ import streamlit as st
 import hashlib
 from data_loader import load_data, load_description_options
 from datetime import datetime
+import pandas as pd
 
 # Lista de usuários permitidos com senhas em hash
 USERS = {
@@ -89,6 +90,11 @@ else:
         for _, msg_row in thread_df.iterrows():
             role = "Usuário" if msg_row['role'] == 'user' else "Assistente"
             st.markdown(f"**{role}**: {msg_row['text']}")
+
+            # Exibir feedback, se houver
+            if pd.notna(msg_row['feedback_description']) or pd.notna(msg_row['is_liked']):
+                like_str = "👍 Positivo" if msg_row['is_liked'] == 1 else "👎 Negativo"
+                st.markdown(f"&nbsp;&nbsp;&nbsp;&nbsp;🗣️ *Feedback*: {msg_row['feedback_description']} ({like_str})", unsafe_allow_html=True)
         
         st.markdown("---")
 

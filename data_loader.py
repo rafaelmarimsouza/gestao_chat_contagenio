@@ -14,19 +14,29 @@ def load_description_options():
 
 def load_data(start_date=None, end_date=None, user_app_hash=None, description=None, limit=50, offset=0):
     conn = get_db_connection()
-    
-    # Construindo a consulta SQL com filtros opcionais e condição de interação do usuário
+
     query = """
-    SELECT m.thread_ID, m.created_at, m.role, m.text, t.user_app_hash, t.company_app_hash, tt.description
+    SELECT 
+        m.id AS message_id,
+        m.thread_ID, 
+        m.created_at, 
+        m.role, 
+        m.text, 
+        t.user_app_hash, 
+        t.company_app_hash, 
+        tt.description,
+        f.description AS feedback_description,
+        f.is_liked
     FROM messages m
     JOIN threads t ON m.thread_ID = t.id
     JOIN thread_types tt ON t.thread_type_id = tt.id
+    LEFT JOIN feedbacks f ON f.message_id = m.id
     WHERE EXISTS (
         SELECT 1 FROM messages
         WHERE thread_ID = m.thread_ID AND role = 'user'
     )
     """
-    
+
     params = {}
     if start_date:
         query += " AND m.created_at >= %(start_date)s"
@@ -41,8 +51,7 @@ def load_data(start_date=None, end_date=None, user_app_hash=None, description=No
         query += " AND tt.description = %(description)s"
         params['description'] = description
 
-    # Adicionando a cláusula LIMIT e OFFSET para paginação
-    query += " LIMIT %(limit)s OFFSET %(offset)s"
+    query += " ORDER BY m.created_at DESC LIMIT %(limit)s OFFSET %(offset)s"
     params['limit'] = limit
     params['offset'] = offset
 
